@@ -232,6 +232,26 @@ PushState.prototype = {
     
     /**
      *
+     * Unbind a callback to an event
+     * @memberof PushState
+     * @method off
+     * @param {string} event The event that was bound
+     * @param {function} callback The function to remove
+     *
+     */
+    off: function ( event, callback ) {
+        if ( this._callbacks[ event ] ) {
+            for ( var i = this._callbacks[ event ].length; i--; ) {
+                if ( this._callbacks[ event ][ i ]._pushstateID === callback._pushstateID ) {
+                    this._callbacks[ event ].splice( i, 1 );
+                    break;
+                }
+            }
+        }
+    },
+    
+    /**
+     *
      * Push onto the History state
      * @memberof PushState
      * @method push
