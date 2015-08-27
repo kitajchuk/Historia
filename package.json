@@ -2,7 +2,7 @@
     "title": "PushState",
     "name": "properjs-pushstate",
     "description": "Handles history pushstate/popstate with async option.",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "homepage": "https://github.com/ProperJS/PushState",
     "readmeFilename": "README.md",
     "contributors": [
@@ -29,7 +29,10 @@
     "keywords": [
         "properjs",
         "history",
-        "pushstate",
+        "pushState",
         "popstate"
-    ]
+    ],
+    "scripts": {
+        "test": "webpack test/test.js test/dist/common.js ; cp PushState.js test/dist/browser.js"
+    }
 }

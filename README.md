@@ -8,16 +8,17 @@ PushState
 ## Installation
 
 ```shell
-npm install properjs-pushstate
+npm install properjs-pushstate --save-dev
 ```
 
 
 ## Usage
 ```javascript
-var pushstate = new PushState({
-    async: true,
-    caching: true
-});
+var PushState = require( "properjs-pushstate" ),
+    pushstate = new PushState({
+        async: true,
+        caching: true
+    });
 
 pushstate.on( "popstate", function ( url, data, status ) {
     // Handle stuff here
