@@ -1,7 +1,7 @@
 PushState
 =========
 
-> Handles history pushstate/popstate with async option.
+> Handles history pushstate/popstate.
 
 
 
@@ -16,37 +16,19 @@ npm install properjs-pushstate --save-dev
 ```javascript
 var PushState = require( "properjs-pushstate" ),
     pushstate = new PushState({
-        // Uses XHR
-        async: true,
+        // Defaults:
 
-        // Keeps response caches for requests
-        caching: true,
-
-        // Handle 404s and 500s
-        handle404: true,
-        handle500: true,
-
-        // Run PushState as a proxy
-        proxy: {
-            domain: "your.proxy.domain"
-        }
+        // Force Hash state instead ( false by default )
+        forceHash: true
     });
 
-pushstate.on( "popstate", function ( url, data, status ) {
-    // Handle stuff here
+pushstate.on( "popstate", function ( url, state ) {
+    // Handle pop
+    // state.uid
 });
 
-pushstate.on( "beforestate", function () {
-    // Handle stuff before state change here
-});
-
-pushstate.on( "afterstate", function () {
-    // Handle stuff after state change here
-});
-
-pushstate.push( url, function ( response, status ) {
-    // Handle push state callback here
-});
+// Push state to address bar
+pushstate.push( url );
 
 // Go back in history
 pushstate.goBack();
