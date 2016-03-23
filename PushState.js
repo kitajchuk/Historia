@@ -75,8 +75,15 @@
          *
          */
         init: function ( options ) {
-            // Ensure this first cache URL is clean as a whistle
-            var url = window.location.href.replace( window.location.hash, "" );
+            /**
+             *
+             * Ensure this first cache URL is clean as a whistle
+             * @memberof PushState
+             * @member _initUrl
+             * @private
+             *
+             */
+            this._initUrl = window.location.href.replace( window.location.hash, "" );
 
             /**
              *
@@ -140,11 +147,11 @@
             this._callbacks = {};
 
             // Set initial state
-            this._states[ url ] = {
+            this._states[ this._initUrl ] = {
                 uid: this.getUID()
             };
 
-            // Enable the popstate event
+            // Enable popstate management
             this._stateEnable();
         },
 
@@ -199,7 +206,7 @@
          *
          */
         push: function ( url ) {
-            // Break on pushing current url
+            // Dont push current URL
             if ( url === window.location.href ) {
                 return;
             }
@@ -360,6 +367,9 @@
                 }, false );
 
             } else if ( this._hashable ) {
+                // For hashstate we should apply initial hash on page load
+                this._push( this._initUrl );
+
                 window.addEventListener( "hashchange", function ( e ) {
                     if ( !self._ishashpushed ) {
                         handler();
