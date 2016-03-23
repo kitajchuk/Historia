@@ -331,7 +331,8 @@
 
             var self = this,
                 handler = function () {
-                    var url = window.location.href;
+                    var url = window.location.href,
+                        roots = ["#/", "#", ""];
 
                     // Ensure we clean out the hash for Router
                     // Example:
@@ -345,7 +346,7 @@
                         url = url.replace( window.location.pathname, "" );
 
                         // Empty hash means we have gone back to root
-                        if ( window.location.hash === "" ) {
+                        if ( roots.indexOf( window.location.hash ) !== -1 ) {
                             // Append the hash root to the URL
                             url = (url + window.location.pathname);
 
