@@ -167,6 +167,16 @@
              *
              * Flag whether to use ajax
              * @memberof PushState
+             * @member _proxy
+             * @private
+             *
+             */
+            this._proxy = ( options && options.proxy !== undefined ) ? options.proxy : false;
+            
+            /**
+             *
+             * Flag whether to use ajax
+             * @memberof PushState
              * @member _async
              * @private
              *
@@ -268,11 +278,24 @@
          *
          */
         push: function ( url, callback ) {
-            var self = this;
+            var self = this,
+                urls = {
+                    // For XHR and Cache
+                    get: url,
+                    
+                    // For History
+                    push: url
+                };
+            
+            // Handle proxy first since we modify the push URL
+            if ( this._proxy && new RegExp( this._proxy.domain ).test( url ) ) {
+                // Use window.location.host so it includes port for localhost
+                urls.push = (window.location.protocol + "//" + window.location.host + "/" + url.replace( this._rHTTPs, "" ));
+            }
             
             // Break on pushing current url
-            if ( url === window.location.href && this._stateCached( url ) ) {
-                callback( this._responses[ url ], 200 );
+            if ( urls.push === window.location.href && this._stateCached( urls.get ) ) {
+                callback( this._responses[ urls.get ], 200 );
                 
                 return;
             }
@@ -280,21 +303,21 @@
             this._fire( "beforestate" );
             
             // Break on cached
-            if ( this._stateCached( url ) ) {
-                this._push( url );
+            if ( this._stateCached( urls.get ) ) {
+                this._push( urls.push );
                         
-                callback( this._responses[ url ], 200 );
+                callback( this._responses[ urls.get ], 200 );
             
             // Push new state    
             } else {
-                this._states[ url ] = {
+                this._states[ urls.get ] = {
                     uid: this.getUID(),
                     cached: false
                 };
                 
                 if ( this._async ) {
-                    this._getUrl( url, function ( response, status ) {
-                        self._push( url );
+                    this._getUrl( urls.get, function ( response, status ) {
+                        self._push( urls.push );
         
                         self._fire( "afterstate", response, status );
                         
@@ -304,7 +327,7 @@
                     });
         
                 } else {
-                    this._push( url );
+                    this._push( urls.push );
     
                     this._fire( "afterstate" );
                     

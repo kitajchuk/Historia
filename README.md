@@ -16,8 +16,20 @@ npm install properjs-pushstate --save-dev
 ```javascript
 var PushState = require( "properjs-pushstate" ),
     pushstate = new PushState({
+        // Uses XHR
         async: true,
-        caching: true
+
+        // Keeps response caches for requests
+        caching: true,
+
+        // Handle 404s and 500s
+        handle404: true,
+        handle500: true,
+
+        // Run PushState as a proxy
+        proxy: {
+            domain: "your.proxy.domain"
+        }
     });
 
 pushstate.on( "popstate", function ( url, data, status ) {
