@@ -34,16 +34,6 @@
 
         /**
          *
-         * Expression match #
-         * @memberof PushState
-         * @member _rHash
-         * @private
-         *
-         */
-        _rHash: /#/,
-
-        /**
-         *
          * Flag whether pushState is enabled
          * @memberof PushState
          * @member _pushable
@@ -85,7 +75,8 @@
          *
          */
         init: function ( options ) {
-            var url = window.location.href;
+            // Ensure this first cache URL is clean as a whistle
+            var url = window.location.href.replace( window.location.hash, "" );
 
             /**
              *
@@ -214,7 +205,7 @@
             }
 
             this._push( url );
-            
+
             this._states[ url ] = {
                 uid: this.getUID()
             };
@@ -333,7 +324,29 @@
 
             var self = this,
                 handler = function () {
-                    var url = window.location.href.replace( self._rHash, "/" );
+                    var url = window.location.href;
+
+                    // Ensure we clean out the hash for Router
+                    // Example:
+                    // Start:  http://localhost/foo/#/bar/
+                    // Result: http://localhost/foo/bar/
+                    if ( self._options.forceHash ) {
+                        // Shave the hash from the end of the URL
+                        url = url.replace( window.location.hash, "" );
+
+                        // Shave the hash root from the end of the URL
+                        url = url.replace( window.location.pathname, "" );
+
+                        // Empty hash means we have gone back to root
+                        if ( window.location.hash === "" ) {
+                            // Append the hash root to the URL
+                            url = (url + window.location.pathname);
+
+                        } else {
+                            // Append the applied hash pathname to the URL
+                            url = (url + window.location.hash.replace( "#", "" ));
+                        }
+                    }
 
                     self._fire( "popstate", url, self._states[ url ] );
                 };
