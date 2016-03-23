@@ -44,16 +44,6 @@
 
         /**
          *
-         * Expression match http/https
-         * @memberof PushState
-         * @member _rHTTPs
-         * @private
-         *
-         */
-        _rHTTPs: /^http[s]?:\/\/.*?\//,
-
-        /**
-         *
          * Flag whether pushState is enabled
          * @memberof PushState
          * @member _pushable
@@ -126,7 +116,7 @@
              * @private
              *
              */
-            this._ishashpushed = false;
+            this._ishashpushed = false;;
 
             /**
              *
@@ -288,9 +278,23 @@
                 window.history.pushState( this._states[ url ], "", url );
 
             } else {
+                // This replace ensures we get the following:
+                // "/":         root
+                // "/foo/bar/": uri path
+                var hashUri = url.replace( window.location.origin, "" );
+
+                // Fix for root hash uri.
+                // Ensure we dont get the following:
+                // "/foo/bar/#/foo/bar/"
+                // Rather we would get the following:
+                // "/foo/bar/#/"
+                if ( hashUri === window.location.pathname ) {
+                    hashUri = "/";
+                }
+
                 this._ishashpushed = true;
 
-                window.location.hash = url.replace( this._rHTTPs, "" );
+                window.location.hash = hashUri;
             }
         },
 
