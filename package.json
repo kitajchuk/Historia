@@ -1,38 +1,54 @@
 {
-    "title": "PushState",
-    "name": "properjs-pushstate",
-    "description": "Handles history pushstate/popstate with async option.",
-    "version": "0.3.4",
-    "homepage": "https://github.com/ProperJS/PushState",
+    "title": "Historia",
+    "name": "properjs-historia",
+    "description": "JS history state attuned for any hero.",
+    "version": "0.1.0",
+    "homepage": "https://github.com/ProperJS/Historia",
     "readmeFilename": "README.md",
     "contributors": [
         {
-            "name": "Brandon Kitajchuk",
-            "email": "kitajchuk@gmail.com",
-            "url": "http://blkpdx.com"
+            "name": "Brandon Lee Kitajchuk",
+            "email": "bk@kitajchuk.com",
+            "url": "https://kitajchuk.com"
         }
     ],
     "repository": {
         "type": "git",
-        "url": "git://github.com/ProperJS/PushState.git"
+        "url": "git://github.com/ProperJS/Historia.git"
     },
     "bugs": {
-        "url": "https://github.com/ProperJS/PushState/issues"
+        "url": "https://github.com/ProperJS/Historia/issues"
     },
     "licenses": [
         {
             "type": "MIT",
-            "url": "https://github.com/ProperJS/PushState/blob/master/LICENSE"
+            "url": "https://github.com/ProperJS/Historia/blob/master/LICENSE"
         }
     ],
-    "main": "PushState",
+    "main": "Historia",
     "keywords": [
         "properjs",
         "history",
         "pushState",
         "popstate"
     ],
+    "devDependencies": {
+        "@babel/cli": "^7.8.4",
+        "@babel/core": "^7.9.0",
+        "@babel/polyfill": "^7.8.7",
+        "@babel/preset-env": "^7.9.0",
+        "babel-loader": "^8.1.0",
+        "eslint": "^7.2.0",
+        "eslint-loader": "^4.0.2",
+        "webpack": "^4.42.0",
+        "webpack-cli": "^3.3.11",
+        "webpack-dev-server": "^3.11.0"
+    },
     "scripts": {
-        "test": "webpack test/test.js test/dist/common.js ; cp PushState.js test/dist/browser.js"
+        "test": "./node_modules/.bin/webpack --progress --profile --display-modules --colors",
+        "start": "npm run test ; node_modules/.bin/webpack-dev-server"
+    },
+    "dependencies": {
+        "properjs-controller": ">=0.3.0"
     }
 }

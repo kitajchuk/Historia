@@ -1,38 +1,43 @@
-PushState
-=========
+ProperJS // Historia
+====================
 
-> Handles history pushstate/popstate.
+> JS history state attuned for any hero.
 
 
 
-## Installation
+### Installation
 
 ```shell
-npm install properjs-pushstate --save-dev
+npm i properjs-historia --save-dev
 ```
 
 
-## Usage
+### Usage
+Alone this utility may not be that useful, which is why it's used with the [ProperJS/Router](https://github.com/ProperJS/Router).
 ```javascript
-var PushState = require( "properjs-pushstate" ),
-    pushstate = new PushState({
-        // Defaults:
+import Historia from "properjs-historia";
 
-        // Force Hash state instead ( false by default )
-        forceHash: true
-    });
+const historia = new Historia({
+    // Force Hash state instead...
+    forceHash: false, // Default
+});
 
-pushstate.on( "popstate", function ( url, state ) {
-    // Handle pop
-    // state.uid
+historia.on( "popstate", ( url, state ) => {
+    console.log( url, state );
 });
 
 // Push state to address bar
-pushstate.push( url );
+historia.push( "http://localhost:9999/some/url" );
 
 // Go back in history
-pushstate.goBack();
+setTimeout(() => {
+    historia.goBack();
+
+}, 2000 );
 
 // Go forward in history
-pushstate.goForward();
+setTimeout(() => {
+    historia.goForward();
+
+}, 4000 );
 ```
